@@ -1,4 +1,4 @@
 # Boise-State
 # Eric Miller
 
-All projects completed at Boise State (2013 - 2016), organized by course.
+All projects completed at Boise State (2014 - 2016), organized by course.
