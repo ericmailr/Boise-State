@@ -1,0 +1,91 @@
+****************
+* Project 3: Random Walk
+* CS 121
+* 24 October 2014
+* Eric Miller
+**************** 
+
+PROJECT OVERVIEW:
+
+This project generates a random path over a grid of a specified size. The points
+on the path are stored in an array.
+
+INCLUDED FILES:
+
+ * README - this file
+ * RandomWalkTest.java - tests RandomWalk class
+ * RandomWalk.java - RandomWalk class
+ * GridMap.java - animates the walk on a grid
+ * RandomWalkGUI.java - GUI showing walk step by step
+
+
+
+BUILDING AND RUNNING:
+
+All project files should be in the same directory.
+
+From the directory containing the .java source code, compile the programs:
+    $ javac RandomWalkTest.java
+    $ java RandomWalkTest    
+Enter requested input and the the program will list the point coordinates of the path.
+
+	$ javac RandomWalkGUI.java
+	Here you include the gridsize and seed like so:
+	$ java RandomWalkGUI 6 1234
+The GUI will display the step by step animation of the path on a grid.
+
+
+PROJECT DESIGN NOTES:
+
+RandomWalkGUI.java and GridMap.java were provided for us and required no modifications. 
+RandomWalk.java includes constructors and methods that are used in the other three programs.
+It includes overloaded constructors, one which accepts a seed value used to aid in testing 
+and the other which only accepts the grid size. The constructors initialize all of the 
+appropriate variables and starts the path with the Point (0,0), which is then added to the 
+beginning of an array of points. 
+
+The step() method adds a single new point to the array, taking into account which potential 
+points are valid (if the path is already at the very bottom, it can't go down anymore, etc). 
+It also only moves down and to the right so as to avoid getting stuck. If the next point made
+from step is at the point (n-1,n-1), that is, the bottom right corner of the grid, the boolean
+done is changed to true, which can be called using the isDone() method. This is used in the 
+animation program to signal when to stop. 
+
+The createWalk() method calls the step() method continuously until the path reaches the bottom
+right corner. The getPath() method returns the array of points in the path, while the toString
+method organizes those points into a nice looking String.
+
+RandomWalkTest.java creates and uses a static method called getInput() which requests that the 
+user inputs a positive grid size and a non-negative string. The code ensures that the input is
+valid and provides a nice error message if it isn't no matter what type of wrong input. The 
+method getInput() is called in main, the appropriate values are stored, and then a new 
+RandomWalk is created using the appropriate constructor (if seed = 0, the constructor without
+a seed input is used). Then the createWalk() method is called as well as the toString() method,
+creating a path and printing out a nice list of the points comprising the path.
+
+
+TESTING:
+
+Testing the getInput() method was done by trying every combination of wrong inputs I could 
+think of and then finding a solution when my error message didn't pop up.
+
+RandomWalkGUI.java coupled with the seed made testing pretty easy. I ran RandomWalkTest.java 
+with a certain grid size and seed and then ran the GUI program. Then I just compared my listed
+points to those on the GUI. I also just ran the GUI program many times just looking for
+failures. As far as I can tell, the program works without error.
+
+DISCUSSION:
+
+One thing that took me awhile was figuring out how to use hasNextInt() appropriately in the 
+loops of RandomWalkTest. Figuring that out, as well as when to include a scan.nextLine(), took 
+a lot of trial and error. I still get confused a bit on some details of how Scanner works.
+
+RandomWalk took quite a bit of trial and error as well. I had to throw in a lot of 
+System.out.println's inside of some of the methods and then call the methods in the Test class
+just to see where my mistakes were. It seems like there is probably a more elegant solution for 
+the step() method than what I did, but once I got it to work I called it quits. If I had more 
+time I would have liked to take a stab at the Extra Credit.
+
+EXTRA CREDIT:
+
+(N/A)
