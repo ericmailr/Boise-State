@@ -1,0 +1,73 @@
+****************
+* p4 MergeSort
+* cs 221-1
+* 1 May 2015
+* Eric Miller
+**************** 
+
+OVERVIEW:
+
+MergeSort implements the merge-sort algorithm using recursion for 
+DoubleLinkedLists and includes methods for finding the largest and smallest
+generic objects from a DoubleLinkedList. Custom Comparators can also be used
+in overloaded methods.
+
+INCLUDED FILES:
+
+MergeSort.java - Merge-sort algorithm class
+
+MergeSortTester.java - test driver class for the MergeSort.java
+
+IntegerComparator.java - "custom" comparator for Integers (uses natural ordering)
+
+WrappedDLL.java - implementation of DoubleLinkedListADT
+
+ElementNotFoundException.java,
+EmptyCollectionException.java - Exceptions used in MergeSort.java
+
+DoubleLinkedListADT.java, 
+IndexedListADT.java, 
+UnorderedListADT.java,
+ListADT.java - Abstract data types implemented by DoubleLinkedList.java
+
+
+
+BUILDING AND RUNNING:
+
+ To compile, type the following: 
+ 	javac MergeSortTester.java
+ 	
+ To run, type the following:
+	java MergeSortTester
+
+PROGRAM DESIGN:
+
+MergeSort.java includes two sort() methods. Both take a DoubleLinkedList and sort them into an order. One 
+does so using natural ordering, the other takes in a custom Comparator parameter to determine the ordering.
+The sort() method uses a helper method called merge(). This method combines two ordered lists into a single
+ordered list and is used for completing the merge() steps of the merge-sort algorithm. Sort() is called 
+recursively after splitting the list given in the function input into two equal-sized lists (or close to equal).
+Once the lists are split down to lists of one element, the merge() function merges them together.
+
+The findLargest and findSmallest methods use recursion through some helper methods. findLargest and findSmallest
+initialize a List Iterator for the list in question. Then their helper methods take that iterator as an argument
+along with a current minimum/maximum. The current min/max is compared with the next element in the iterator and
+recursive calls are made until each element is checked. 
+
+MergeSortTester tests the functionality of MergeSort.java.
+
+TESTING:
+
+I obviously didn't test everything, but I did make sure that sort(), findLargest(), and findSmallest() all worked as 
+expected for an empty list, a list with one integer, and a list with nine integers. I planned to do a little more 
+testing, but I feel like I've covered the important things with just the 9 tests. I tested the methods using both 
+my "custom" comparator and the standard.
+
+DISCUSSION:
+ 
+To me, this was one of the more challenging projects I've done so far. It took a solid couple of days to nail down
+recursion in general, and applying it to the merge sort algorithm had me stumped for awhile. I did a lot of running
+through the debugger to get a good feel for what was going on, but it still took quite a bit of time and a little
+luck to realize what I needed to do to get it to work. To be honest, I think I could make the implementation of 
+sort() a little more concise, but it gets the job done as far as my testing can tell. At the very least, this project
+left me thinking recursion is pretty cool, as well as the merge-sort algorithm.
