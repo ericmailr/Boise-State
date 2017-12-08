@@ -1,0 +1,68 @@
+****************
+* p1 KNIGHT'S TOUR
+* cs 421
+* 6 July 2016
+* Eric Miller
+**************** 
+
+OVERVIEW:
+KnightTour solves the problem of finding a path for a knight on a chess board such that every space is traversed
+exactly once. We use exhaustive search with backtracking.
+
+BUILDING AND RUNNING:
+ To compile, type the following: 
+ 	javac KnightTour.java
+ 	
+ To run, type the following:
+	java KnightTour <heuristic> <board size (n)> <starting row> <starting column>
+	    
+	Example:    java KnightTour 0 6 1 2
+	This uses a basic search on a 6x6 board and returns the solution for a knight starting at row 1, column 2
+
+PROGRAM DESIGN:
+KnightBoard.java: represents the chess board. KnightTour.java: driver, finds solution. Position.java: represents a position on the KnightBoard
+
+KnightBoard is a 2d array of Positions. The search methods used recursively check each next move until no more valid moves
+are available (or all squares have been traversed), and then backtracks to search other paths.
+
+KnightTour is the driver program. It collects the command line arguments and runs the appropriate search on the 
+appropriate KnightBoard and starting position.
+
+***TESTING***
+Results for a 7x7 board, starting at row 1, column 1:
+
+No Heuristic:
+21 46 41  2 23 26  9 
+40  1 22 27 10  3 24 
+47 20 45 42 25  8 11 
+44 39 34 19 28 15  4 
+33 48 43 36  7 12 29 
+38 35 18 31 14  5 16 
+49 32 37  6 17 30 13 
+
+Total number of moves checked: 254727173
+
+Heuristic 1:
+13 10 15  2  5  8 33 
+16  1 12  9 34  3  6 
+11 14 37  4  7 32 35 
+20 17 26 41 36 45 24 
+27 38 19 46 25 42 31 
+18 21 40 29 48 23 44 
+39 28 47 22 43 30 49 
+
+Total number of moves checked: 24028540
+
+Heuristic 2:
+49 44 11  2 29 42 13 
+10  1 46 43 12  3 28 
+45 48  9 30 41 14 35 
+ 8 25 40 47 36 27  4 
+39 22 31 26 17 34 15 
+24  7 20 37 32  5 18 
+21 38 23  6 19 16 33 
+
+Total number of moves checked: 171
+
+Heuristic 1 is significantly faster than no heuristic (only checks roughly 9% of the moves checked with no heuristic). 
+Heuristic 2 is much, much faster than either of the other two options (only checks a small fraction of 1% of the moves checked with heuristic 1).
