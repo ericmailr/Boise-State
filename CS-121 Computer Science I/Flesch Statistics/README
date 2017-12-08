@@ -1,0 +1,76 @@
+****************
+* Project 4: Flesch Statistics
+* CS 121
+* 12 November 2014
+* Eric Miller
+**************** 
+
+PROJECT OVERVIEW:
+
+This project reads a text file and collects statistics about it to determine the 
+flesch index. 
+
+INCLUDED FILES:
+
+ * README - this file
+ * FleschStatistics.java - Implements FleschStatisticsInterface
+ * FleschStatisticsInterface.java - Statistics Interface
+ * FleschStatisticsTest.java - tests ProcessText
+ * ProcessText.java - Driver for FleschStatistics 
+
+
+
+BUILDING AND RUNNING:
+
+All project files should be in the same directory.
+
+From the directory containing the .java source code and text files, compile the program:
+    $ javac ProcessText.java
+To run the program, include the filename(s) of the text file(s) you want statistics for:
+    $ java ProcessText [filename]    
+    
+Displays statistics about the text file including number of syllables, words, longest word,
+and the flesch index and grade.
+
+
+PROJECT DESIGN NOTES:
+
+The FleschStatisticsInterface interface was provided for us. The FleschStatistics class 
+implements the methods in the interface. It contains a constructor which creates a file 
+and reads it, collecting all of the needed statistics for computing the flesch index. The
+constructor makes a scanner that reads each line of the file. For each line of the file a
+string tokenizer splits up the line into each individual word using a set of delimiters. 
+Each word is checked for vowels and a syllable count variable keeps track of the number 
+of syllables using the definitions of a syllable provided.
+
+Each line is also checked for any characters which imply the end of a sentence and a tally
+is kept for the number of sentences. The total number of words is also calculated using 
+the string tokenizer method countTokens(). The flesch index and grade level is calculated
+by inputing the collected statistics into the provided flesch index formula. All of the 
+statistics are collected using nested if statements inside of for and while loops.
+
+FleschStatistics also has a try/catch set up in case the file cannot be scanned.
+
+Process Text checks that the filenames input by the user are valid and can be read and
+accessed. If no filenames have been entered, an appropriate error message displays. Likewise,
+if the filename does not exist or can't be read. Otherwise, the file object is created for 
+each valid file and FleschStatistics object is created and its statistics printed out.
+
+
+TESTING:
+
+Testing was easy since a test program was provided for us (FleschStatisticsTest.java). Either 
+my methods passed or they didn't. Pretty straightforward. For the extra credit, I did edit a 
+couple files with some extra long words just to ensure it was working and printing each line
+that the word showed up at. 
+
+DISCUSSION:
+
+My solution was to use a bunch of if else statements, but I'm sure it isn't the best way to do 
+it. I'm pretty curious what the best way is. Still, my solution was pretty fun to work out and 
+think about. So far, this has been my favorite project.
+
+EXTRA CREDIT:
+
+In FleschStatistics, I keep track of the longest word and the lines where it shows up. This info
+is printed out at the end of each list of statistics.
