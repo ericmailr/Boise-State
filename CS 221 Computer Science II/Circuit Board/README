@@ -1,0 +1,202 @@
+****************
+* p2 CircuitTracer
+* cs 221-1
+* 11 March 2015
+* Eric Miller
+**************** 
+
+OVERVIEW:
+
+CircuitTracer searches for the shortest paths between start and end points 
+on a circuit board as read from an input file using either a stack or queue 
+as the underlying search state storage structure and displaying output to 
+the console or to a GUI according to options specified via command-line 
+arguments.
+
+INCLUDED FILES:
+
+CircuitBoard.java - This class represents a 2D circuit board as read from an input file.
+
+Storage.java - A container for storing elements of type T in one of multiple possible
+underlying data structures. 
+
+TraceState.java - Represents a search state including a potential path through a CircuitBoard.
+
+CircuitTracer.java - Driver class that runs search algorithm to find the shortest paths between
+two points on a given CircuitBoard.
+
+InvalidFileFormatException.java - Exception for files that do not correctly represent a 
+CircuitBoard's data.
+
+OccupiedPostionException.java - Exception that is thrown when an attempt is made to add a trace 
+to an occupied position in a CircuitBoard.
+
+BUILDING AND RUNNING:
+
+ To compile, type the following: 
+ 	javac CircuitTracer.java
+ 	
+ To run, type the following:
+	java CircuitTracer <dataStructure> <displayMode> <inputFileNameCircuitBoard>
+	Where:
+		<dataStructure> is the data structure that will be used to find the circuit, and should be either:
+			-s, for using stack
+			-q, for using queue
+	    <displayMode> is the display mode for the output, and should be either:
+	        -c, for using a console
+	        -g, for using a GUI    
+	    <inputFileNameCircuitBoard> is the file name for the input circuit board
+	    
+	Example:    java CircuitTracer -s -g circuit1.dat
+	 
+ Ensure that the appropriate .dat files are contained in
+ the current directory.
+
+PROGRAM DESIGN:
+
+CircuitTracer parses the command line arguments and reads in the CircuitBoard data from the specified file
+by creating a new CircuitBoard. CircuitBoard.java will throw a FileNotFoundException if the file cannot be 
+found or read. CircuitBoard.java will throw an InvalidFileFormatException if there are any problems
+with the way the specified file is formatted. A description of how the file should be formatted is well
+outlined in CircuitBoard.java. After creating a CircuitBoard, CircuitTracer runs through the search algorithm,
+which is described as follows:
+
+The x and y indices of the starting point are obtained, and all open, adjacent positions to that position of 
+the CircuitBoard are added to stateStore as a TraceState, which represents a path on the CircuitBoard.
+(Note: stateStore is a Storage, which is set up so that its methods will call the correct method corresponding 
+to the data structure specified by the user. This was done using cases.)
+
+While stateStore still contains TraceStates, its next unevaluated TraceState is checked for completion. If this 
+current TraceState is not yet adjacent to the ending point, we generate all valid next TraceState objects from 
+the current one by once again checking for open positions on the updated circuit board and creating new 
+TraceStates from the current one and storing them stateStore. Else, if the current TraceState completed a path
+to the ending point, it's length is checked to see if it is the shortest we've seen so far. If it is the 
+shortest so far, we store it in an ArrayList bestPaths.
+
+This search is repeated until stateStore is empty, at which point CircuitTracer prints the results as specified
+by the user. Note that I did not have time to implement the GUI. Any errors in user input will display a message
+explaining how to correctly run the program.
+
+
+	Stack vs Queue - Documenting the search algorithm
+	
+EX- Original CircuitBoard:
+
+1	0	0
+0	0	0
+0	X	2
+----------------------------------------------------------------------------------------------------------
+STORAGE USING STACK:
+ 	
+	1				2				3				4				5				6				7	
+1	T	0		1	0	0		1	0	0		1	0	0		1	0	0		1	T	0		1	T	T
+0	0	0		T	0	0		T	0	0		T	T	0		T	T	T		T	T	0		T	T	0
+0	X	2		0	X	2		T	X	2		0	X	2		0	X	2		0	X	2		0	X	2
+																										
+1	T	T		1	T	T		1	T	0		1	T	0		1	T	0		1	T	0		1	T	T
+T	T	T		0	0	0		0	T	0		T	T	0		0	T	T		T	T	0		0	0	T
+0	X	2		0	X	2		0	X	2		0	X	2		0	X	2		T	X	2		0	X	2
+	8				9				10				11				12				13				14	
+	
+Search Steps (stack):
+
+CREATE 1, CREATE 2. (# of states in stack = 2)
+RETRIEVE 2, CREATE 3, CREATE 4. (3)
+RETRIEVE 4, CREATE 5, CREATE 6. (4)
+RETRIEVE 6, CREATE 7. (4)
+RETRIEVE 7, CREATE 8. (4)
+RETRIEVE 8, SOLUTION 8 SAVED. (3)
+RETRIEVE 5, SOLUTION 5 SAVED, 8 FORGOTTEN. (2)
+RETRIEVE 3, STUCK. (1)
+RETRIEVE 1, CREATE 9, CREATE 10. (2)
+RETRIEVE 10, CREATE 11, CREATE 12. (3)
+RETRIEVE 12, SOLUTION 12 SAVED, 5 KEPT. (2)
+RETRIEVE 11, CREATE 13. (2)
+RETRIEVE 13, STUCK. (1)
+RETRIEVE 9, CREATE 14. (1)
+RETRIEVE 14, SOLUTION 14 SAVED, 5 AND 12 KEPT. (0)
+------------------------------------------------------------------------------------------------------------
+STORAGE USING QUEUE:
+
+	1				2				3				4				5				6				7	
+1	T	0		1	0	0		1	T	T		1	T	0		1	0	0		1	0	0		1	T	T
+0	0	0		T	0	0		0	0	0		0	T	0		T	T	0		T	0	0		0	0	T
+0	X	2		0	X	2		0	X	2		0	X	2		0	X	2		T	X	2		0	X	2
+																										
+1	T	0		1	T	0		1	T	0		1	0	0		1	T	0		1	T	T		1	T	T
+T	T	0		0	T	T		T	T	0		T	T	T		T	T	0		T	T	0		T	T	T
+0	X	2		0	X	2		0	X	2		0	X	2		T	X	2		0	X	2		0	X	2
+	8				9				10				11				12				13				14	
+
+Search Steps (queue):	
+CREATE 1, CREATE 2. (# of states now in stack = 2)
+RETRIEVE 1, CREATE 3, CREATE 4. (3)
+RETRIEVE 2, CREATE 5, CREATE 6. (4)
+RETRIEVE 3, CREATE 7. (4)
+RETRIEVE 4, CREATE 8, CREATE 9. (5)
+RETRIEVE 5, CREATE 10, CREATE 11. (6)
+RETRIEVE 6, STUCK. (5)
+RETRIEVE 7, SOLUTION 7 SAVED. (4)
+RETRIEVE 8, CREATE 12. (4)
+RETRIEVE 9, SOLUTION 9 SAVED, 7 KEPT. (3)
+RETRIEVE 10, CREATE 13. (3)
+RETRIEVE 11, SOLUTION 11 SAVED, 7 AND 9 KEPT. (2)
+RETRIEVE 12, STUCK. (1)
+RETRIEVE 13, CREATE 14. (1)
+RETRIEVE 14, SOLUTION 14 NOT SAVED. (0)
+------------------------------------------------------------------------------------------------------------
+
+I decided that showing the steps like this would be the most readable way to represent the order of state
+evaluations and new state generation. Hopefully I'm not wrong. We see from this
+example circuit board that ultimately, using either a stack or a queue results in searching the same number
+of states. The maximum number of states stored in a queue is greater than the the maximum number of states 
+stored in a stack. A queue generally does not arrive at a solution faster than a stack does since the stack 
+essentially constantly progresses a particular starting point (and its successive points) to an end (whether 
+that end is a solution, or dead-end), while the queue keeps each individual path's progression in pace with each 
+other. This means that a queue will find the shorter complete paths before it finds the longer complete paths, 
+whereas with a stack it is entirely possible that the longest solution path will be found first (in fact, that 
+is what happened in this example). Another way to describe how the stack affects the search algorithm is that 
+at any given time, the state that is currently being added to is the longest state (or one of multiple longest 
+states) currently stored in the stack.
+
+So, using a queue will always result in the shortest solution paths being found before the longer ones, whereas
+with a stack it's anyone's guess. So I suppose if we were only interested in the shortest solution paths, we 
+could stop a search that uses a queue as soon as it finds a solution that is longer than a previously found 
+solution path. This could potentially decrease the number of states that must be searched, unless I've totally
+misinterpreted how these data structures affect the search algorithm. The Big-Oh runtime of the search algorithm
+is O(n). I'm not sure about Big-oh memory use. Using a queue should use more memory than a stack, but I think in
+both cases the memory use is O(n).
+
+TESTING:
+
+I tested the program using each of the provided .dat files to ensure that the results were as expected. For valid
+files, I actually went through and made sure that each shortest solution was being printed. I also made sure the 
+command line arguments affected the program correctly. For instance, if I specified that a stack be used, I printed
+out statements within the stack case in the Storage methods. I made sure that the printUsage method printed its 
+message when I used the wrong letters for the program arguments. 
+
+For each of the invalid files, I made sure that the InvalidFileFormatException was be thrown for the right 
+reasons by printing the stack trace and looking at from where in CircuitBoard the exception was thrown. The program
+handles each of the .dat files that I tested in the way that is expected. The invalid files consist of things like 
+invalid characters, circuit boards without a 1 or a 2 or with too many 1's or 2's, circuit boards whose number of
+columns and rows don't match the numbers specified in the first line, etc.
+
+For circuit10.dat, there is no solution path. I considered printing a statement stating as much (if the search ended
+and bestPaths was empty), but I decided against it since it didn't match the requested output format.
+
+DISCUSSION:
+ 
+In retrospect, this project seemed pretty straightforward. It was pretty intimidating before starting 
+though, and it took me quite a bit of time just to get a solid grasp on how each class works together and how
+things were intended to be implemented. Implementing the search algorithm actually ended up being one of the 
+easiest things to do since the pseudocode was provided and by the time I got around to implementing it I had a 
+pretty good understanding of how everything else in the program worked.
+
+The main issue that I would fix if I had more time is how CircuitBoard checks for invalid format. It gets the job
+done, but it looks pretty unorganized to me. I feel as though there are better ways to check for proper text 
+format, and with a couple quick searches it looks like using Patterns and "regular expressions" could prove useful
+for this. Also, if I had more time, I would like to implement the GUI since I enjoyed working on the GUI projects
+in CS 121.
+
+Probably my favorite part of the project was actually just running through the algorithm steps before implementing
+it in code, and just thinking about the differences between stacks and queues.
