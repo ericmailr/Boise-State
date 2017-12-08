@@ -1,0 +1,64 @@
+****************
+* p3 DoubleLinkedList
+* cs 221-1
+* 17 April 2015
+* Eric Miller
+**************** 
+
+OVERVIEW:
+
+DoubleLinkedList is an node-based implementation of the DoubleLinkedListADT
+
+INCLUDED FILES:
+
+DoubleLinkedList.java - Implementation of DoubleLinkedListADT.
+
+DoubleLinkedListTest.java - test driver class for the DoubleLinkedList.java
+
+ElementNotFoundException.java,
+EmptyCollectionException.java - Exceptions used in DoubleLinkedList.java
+
+DoubleLinkedListADT.java, 
+IndexedListADT.java, 
+UnorderedListADT.java,
+ListADT.java - Abstract data types implemented by DoubleLinkedList.java
+
+LinearNode.java- class for representing nodes in DoubleLinkedList.java
+
+BUILDING AND RUNNING:
+
+ To compile, type the following: 
+ 	javac DoubleLinkedListTester.java
+ 	
+ To run, type the following:
+	java DoubleLinkedListTester
+
+PROGRAM DESIGN:
+
+DoubleLinkedList.java includes implementations of each method in the DoubleLinkedListADT. It uses the 
+LinearNode class which has each node keep the address of both the previous and next nodes.
+
+DoubleLinkedListTester.java includes many test methods for ensuring DoubleLinkedList.java implements the 
+DoubleLinkedListADT correctly. 
+
+SOURCES: 
+
+Aside from the Java documentation for ListIterator, no sources were used outside of class and Piazza.
+
+TESTING:
+
+As it would be too time consuming to test everything, I only tested methods and scenarios that seemed 
+most problematic. I tried to avoid re-testing scenarios and methods that were very similar to each 
+other. There are 428 test methods in total. Due to unexpected time constraints, I was not
+able to pass every test. The tests I failed were all directly related to the ListIterator implementation.
+I think the problem has to do with failing to keep track of previous nodes correctly. When calling next(),
+the previous elements in the list seem to be forgotten. Perhaps I need to make a new variable to keep track
+of the last node when either previous() or next() are called.
+
+DISCUSSION:
+ 
+The biggest challenge for this project was definitely trying to figure out how to get the ListIterator to 
+work correctly, which I failed miserably at. Either there is a nice little gap in my understanding of how
+the nodes are supposed to interact with each other, or I'm just making a silly mistake. I hope to keep working
+on this problem and get it resolved in time for p4-redemption. I think I also need to modify the IndexedListADT 
+remove(int index) method.
