@@ -1,0 +1,117 @@
+****************
+* p1 GridMonitor
+* cs 221-1
+* 23 January 2015
+* Eric Miller
+**************** 
+
+OVERVIEW:
+
+ GridMonitor.java reads a .txt file containing cell value
+ data for a solar array. Using a simple set of guidelines,
+ GridMonitor determines whether each particular cell is in
+ danger of exploding. GridMonitorTest.java tests different
+ types of solar arrays to ensure successful analysis.
+
+
+INCLUDED FILES:
+
+GridMonitor.java - This contains the methods used for 
+determining whether a cell is dangerous or not.
+
+GridMonitorInterface.java - This interface that 
+GridMonitor.java implements, containing the necessary
+method signatures with descriptions.
+
+GridMonitorTest.java - This tests several different solar 
+array scenarios to ensure that GridMonitor works.
+
+negatives.txt - For testing negative cell values.
+oneByOne.txt - For testing a one-by-one array.
+sample.txt - For testing a square array.
+sample4x5.txt - For testing a rectangular array.
+sampleDoubles.txt - For testing an array with doubles.
+wideRange.txt - For testing a wide range of values.
+
+BUILDING AND RUNNING:
+
+ To compile, type the following: 
+ 	javac GridMonitorTest.java
+ 	
+ To run, type the following: 
+ 	java GridMonitorTest
+ 
+ Ensure that the appropriate .txt files are contained in
+ the same directory.
+
+PROGRAM DESIGN:
+
+ GridMonitor implements GridMonitorInterface. Its constructor 
+ (which throws a FileNotFoundException) accepts a String 
+ containing the name of the file to be read as a parameter. It
+ collects the cell value information and stores the info in a 
+ 2d double array (Note that the first two numbers in a properly
+ formatted file represent the number of rows and columns). 
+ 
+ After the solar array info has been collected and stored in an
+ array, methods are used to iterate through each cell in the 
+ array and calculate the sum of each adjacent (horizontally and 
+ vertically) cell, using the cell's own value if it is missing 
+ one or more of 4 adjacent cells (cell is on an edge). The average
+ is then taken for each individual cell by 
+ dividing each sum cell by 4. Finally, the max delta that a 
+ particular cell can deviate from the surrounding average is 
+ calculated by dividing the surrounding average by 2. getDangerGrid()
+ then checks each of the original cell values and returns boolean 
+ terms describing whether a particular cell exceeds its safe range.
+ (true = dangerous, false = safe). The toString method returns a 
+ string representation of both the original cell value information,
+ as well as the corresponding danger information.
+
+TESTING:
+
+ GridMonitorTest contains several methods which ultimately test 
+ several different scenarios to ensure GridMonitor returns the 
+ correct report. This includes testing each method in GridMonitor,
+ as well as ensuring that there is proper encapsulation and that
+ the program responds appropriately if a particular filename cannot
+ be found.
+
+ Types of solar arrays tested include those with cells that are in
+ square grids, rectangular grids, grids containing positive and 
+ negative values, grids containing a wide range of values, values 
+ that are doubles, as well as a 1x1 value. 
+ 
+ Priority was given to testing that the surrounding sum values were
+ correct, as well as the final diagnosis of each cell's safety, since
+ these are ultimately the most important factors for the purposes of
+ this program.
+
+DISCUSSION:
+ 
+ I didn't encounter too many problems while creating GridMonitor and 
+ testing it. I did however neglect to use absolute values around each
+ necessary value to account for possible negative values in the solar
+ arrays. That was an easy fix.
+ 
+ There was a little more freedom in this project than in cs 121. For
+ instance, since the required toString() method was left up to me, I 
+ figured the most important details to return would be the original
+ cell values along with whether each cell is safe or not. 
+ 
+ One hesitation I had was how to handle situations where a particular
+ cell was exactly on the border between safe and unsafe. However, in 
+ the project description, it states that a cell is only dangerous 
+ if differs by MORE THAN 50% from the average of the surrounding cells.
+ I went ahead and followed that guideline precisely, though if I were 
+ actually on a ship that could potentially blow up due to that detail,
+ I might revise that method.
+ 
+ Creating the testing methods was probably the most tedious task. I 
+ wanted to be sure to adequately test each scenario, and I may have 
+ actually unnecessarily repeated some tests. But, ultimately, I feel
+ pretty confident about the ability of my program to do what is expected.
+ 
+ This was a nice way to get back into programming, as I'm still a 
+ beginner and had forgotten much of what I'd gotten used to in cs 121.
+ 
