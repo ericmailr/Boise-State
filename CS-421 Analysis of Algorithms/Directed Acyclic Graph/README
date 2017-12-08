@@ -1,0 +1,62 @@
+****************
+* p3 DAG
+* cs 421
+* 12 August 2016
+* Eric Miller
+**************** 
+
+OVERVIEW:
+Analyzing an activity DAG to discover each activity's earliest, latest, and slack times 
+
+BUILDING AND RUNNING:
+ To compile, type the following: 
+ 	javac DagAnalyzer.java
+ 	
+ To run DagAnalyzer program, type the following:
+	java DagAnalyzer <filename>
+	    
+	Example:    java DagAnalyzer testfile1.txt
+	testfile1.txt contains a matrix representing a DAG
+
+PROGRAM DESIGN:
+First, the graph data is parsed from the file. Each activity in the graph contains a
+set of incoming and outgoing activities. Using this data, an appropriate Topological 
+Order is found. Then, the appropriate dummy nodes are added.
+
+Finally, the activities are cycled through in topological order (and its reverse) to 
+update finishing times.
+
+***TESTING***
+Used to the provided testfiles and compared them with solutions I worked out on paper.
+
+Example Results:
+(testfile3):
+   S  a  b  c  d  e  f  g  k  F
+S -1  5 -1 -1 -1 -1 -1 -1 -1 -1 
+a -1 -1  1  1 -1 -1 -1 -1 -1 -1 
+b -1 -1 -1 -1  4  1 -1 -1 -1 -1 
+c -1 -1 -1 -1 -1 -1  2  1 -1 -1 
+d -1 -1 -1 -1 -1 -1 -1 -1 -1  0 
+e -1 -1 -1 -1 -1 -1 -1 -1  1 -1 
+f -1 -1 -1 -1 -1 -1 -1 -1  1 -1 
+g -1 -1 -1 -1 -1 -1 -1 -1 -1  0 
+k -1 -1 -1 -1 -1 -1 -1 -1 -1  0 
+F -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 
+
+Activity	EC	LC	SlackTime
+----------------------------------------
+S			0	0	0
+a			5	5	0
+b			6	6	0
+c			6	7	1
+d			10	10	0
+e			7	9	2
+f			8	9	1
+g			7	10	3
+k			9	10	1
+F			10	10	0
+
+SOURCES:
+I ended up finding help for finding Topological Order from the following: 
+http://www.geeksforgeeks.org/topological-sorting/
+
